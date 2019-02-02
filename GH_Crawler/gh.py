@@ -4,27 +4,28 @@
     github repo Crawler
     @author: Manyao Peng
 '''
+from __future__ import (division, print_function, absolute_import, unicode_literals)
+
 import os
 import time
 import requests
 
 base_url = "https://api.github.com"
 
-def gh_request(endpoint, method="GET", retries=0, **kwargs):
-    payload = dict(**kwargs)
+def gh_request(endpoint, retries=0):
     headers = {
         "Accept": "application/vnd.github.v3+json",
-        "User-Agent": "pengm/GH_Crawler",
-        "Authorization":"token ",
+        "User-Agent": "GH_Crawler",
+        "Authorization":"token myToken",
         "Content-Type":"application/json",
     }
+    
     try:
-        r = getattr(requests, method.lower())(base_url + endpoint, params=payload, headers=headers)
-
+        r = requests.get(base_url + endpoint, headers=headers)
     except requests.exceptions.ConnectionError:
         if retries < 10:
             print("Retrying {0}".format(endpoint))
-            return gh_request(endpoint, method=method, retries=retries+1, **kwargs)
+            return gh_request(endpoint, retries=retries+1)
 
     if r.status_code != requests.codes.ok:
         if r.status_code == 403:
@@ -35,8 +36,8 @@ def gh_request(endpoint, method="GET", retries=0, **kwargs):
                  reset = int(r.headers["X-RateLimit-Reset"]) - time.time()
                  print("Waiting {0} seconds for rate limit to reset...".format(reset))
                  time.sleep(max(1.0, reset))
-                 return gh_request(endpoint, method=method, **kwargs)
+                 return gh_request(endpoint)
 
         r.raise_for_status()
 
-     return r
+    return r
