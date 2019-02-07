@@ -3,7 +3,9 @@
 GH_Crawler collects the installation information in git repos
 
 
-Use: `Python3 crawler.py`
+Use: 
+`cd GH_Crawler`
+`python3 crawl.py`
 
 
-replace the `<Mytoken>` with OATH token
+replace the `<Mytoken>` with OATH token in the header
