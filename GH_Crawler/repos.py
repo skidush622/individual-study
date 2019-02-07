@@ -9,10 +9,10 @@ import os
 import json
 import base64
 import random
-import logging
 import requests
 
 from gh import gh_request
+from extract import extract
 
 TOTAL_N_EST = 21300000
 
@@ -40,38 +40,47 @@ def process_repo(repo, clobber=False):
     # Skip if this repo had already been downloaded.
     bp = os.path.join(BASE_DIR, name)
     if not clobber and os.path.exists(bp):
-        logging.info("{0} has already been downloaded. Skipping".format(name))
+        print(name + " has already been downloaded. Skipping")
         return False, False, False
 
-    logging.info("Processing {0}...".format(name))
-
-    # Get the repository info.
-    try:
-        info = gh_request("/repos/{0}".format(name)).json()
-    except requests.exceptions.HTTPError:
-        logging.info("Can't get info for {0}".format(name))
-        return False, False, False
-
-    # Save the information.
-    try:
-        os.makedirs(bp)
-    except os.error:
-        pass
-    with open(os.path.join(bp, "info.json"), "w") as f:
-        json.dump(info, f)
+    print("Processing " + name + " ...")
 
     # Get the README.
     readme = None
     try:
         r = gh_request("/repos/{0}/readme".format(name)).json()
     except requests.exceptions.HTTPError:
-        logging.info("No README found for {0}".format(name))
+        print("No README found for " + name)
     else:
         content = r.get("content", None)
         if content is not None:
-            readme = base64.b64decode(content)
-            print(readme)
-            with open(os.path.join(bp, "README"), "wb") as f:
-                f.write(readme)
+            # Get the repository info.
+            try:
+                info = gh_request("/repos/{0}".format(name)).json()
+            except requests.exceptions.HTTPError:
+                print("Can't get info for " + name)
+                return False, False, False
+
+            # Save the information.
+            try:
+                os.makedirs(bp)
+            except os.error:
+                pass
+
+            with open(os.path.join(bp, "info.json"), "w") as f:
+                json.dump(info, f)
+                readme = base64.b64decode(content)
+                with open(os.path.join(bp, "README.txt"), "wb") as f:
+                    f.write(readme)
+                arr = extract(os.path.join(bp, "README.txt"))
+                installation = ""
+                for str in arr:
+                    installation = installation + str + '\n'
+                if(installation):
+                    print("INSTALLATION found for " + name)
+                    with open(os.path.join(bp, "INSTALLATION.txt"), "w") as f:
+                        f.write(installation)
+                else:
+                    print("No INSTALLATION found for " + name)
         else:
-            logging.info("No README found for {0}".format(name))
+            print("No README found for " + name)
