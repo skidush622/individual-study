@@ -29,17 +29,46 @@ def get_random_repos():
         r = gh_request("/repositories?since=" + str(i)).json()
     return r
 
-def get_dependency():
+def get_dependency(username, repo):
+    # Skip if this repo had already been downloaded.
+    bp = os.path.join("./req", username+"/"+repo)
+    if os.path.exists(bp):
+        print(username+"/"+repo + " has already been downloaded. Skipping")
+        return False
+    
+    print("Processing " + username+"/"+repo + " ...\n")
+
+    # Save the information.
+    try:
+        os.makedirs(bp)
+    except os.error:
+        pass
+
     dependency=None
     try:
-        r = gh_request("/repos/maxhodak/keras-molecules/contents/requirements.txt").json()
+        r = gh_request("/repos/{0}/{1}/contents/requirements.txt".format(username, repo)).json()
     except requests.exceptions.HTTPError:
-        print("No requirements found")
+        print("No requirements.txt found\n")
     else:
         content = r.get("content", None)
         dependency = base64.b64decode(content)
-        with open('requirements.txt', 'wb') as file:
+        with open(os.path.join(bp,'requirements.txt'), 'wb') as file:
               file.write(dependency)
+              print("requirements.txt download completed\n")
+              return 1
+
+    dependency=None
+    try:
+        r = gh_request("/repos/{0}/{1}/contents/package.json".format(username, repo)).json()
+    except requests.exceptions.HTTPError:
+        print("No package.json found\n")
+    else:
+        content = r.get("content", None)
+        dependency = base64.b64decode(content)
+        with open(os.path.join(bp,'package.json'), 'wb') as file:
+            file.write(dependency)
+            print("package.json download completed\n")
+            return 2
 
 def process_repo(repo, clobber=False):
     # Skip forks.

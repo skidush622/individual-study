@@ -16,7 +16,7 @@ def gh_request(endpoint, retries=0):
     headers = {
         "Accept": "application/vnd.github.v3+json",
         "User-Agent": "GH_Crawler",
-        "Authorization":"token MyToken",
+        "Authorization":"token myToken",
         "Content-Type":"application/json",
     }
     
