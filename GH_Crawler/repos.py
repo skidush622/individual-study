@@ -29,6 +29,18 @@ def get_random_repos():
         r = gh_request("/repositories?since=" + str(i)).json()
     return r
 
+def get_dependency():
+    dependency=None
+    try:
+        r = gh_request("/repos/maxhodak/keras-molecules/contents/requirements.txt").json()
+    except requests.exceptions.HTTPError:
+        print("No requirements found")
+    else:
+        content = r.get("content", None)
+        dependency = base64.b64decode(content)
+        with open('requirements.txt', 'wb') as file:
+              file.write(dependency)
+
 def process_repo(repo, clobber=False):
     # Skip forks.
     if repo.get("fork", True):

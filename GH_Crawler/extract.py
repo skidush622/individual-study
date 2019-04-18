@@ -19,7 +19,7 @@ def extract(readme):
        for line in file_object:
            if(line.startswith("## Installation") or line.startswith("Installation")):
               flag = True
-           elif(flag and (line.startswith("## ") or line.startswith("======"))):
+           elif(flag and (line.startswith("## ") or line.startswith("======") or line.startswith("-----"))):
               flag = False
            if(flag):
                elem = line.rstrip('\n')

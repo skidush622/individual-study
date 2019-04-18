@@ -1,0 +1,7 @@
+## Installation
+    go get github.com/4eek/gofaker
+or
+    cd $GOPATH/src
+    git clone git://github.com/gofaker/gofaker.git
+    cd gofaker
+    go install

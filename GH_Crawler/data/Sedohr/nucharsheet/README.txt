@@ -1,0 +1,1 @@
+Attempting to use Javascript/Jquery/CSS to create a dynamic character sheet for a tabletop dnd based game.

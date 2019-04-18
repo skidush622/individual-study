@@ -1,0 +1,9 @@
+## Installation
+We asume that you already have a web server capable of running Rack applications (keywords
+: Apache, nginx, mod_passenger, ...).
+    $ git clone git://github.com/RocknRoot/Sputnik.git sputnik
+    $ cd sputnik
+    $ gem install bundler
+    $ bundle install
+### Troubleshooting
+If you have problems to run Sputnik (Database connect error, read only db, etc.), ensure that the db directory is owned by corresponding http user (www, www-data, nobody, etc.).

@@ -1,0 +1,12 @@
+## Installation
+Clone the repository:
+```
+git clone git://github.com/morkai/coap-visualizer.git
+```
+or [download](https://github.com/morkai/coap-visualizer/zipball/master)
+and extract it.
+Go to the project's directory and install the dependencies:
+```
+cd coap-visualizer/
+npm install
+```

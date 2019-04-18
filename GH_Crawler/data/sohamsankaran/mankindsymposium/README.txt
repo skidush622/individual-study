@@ -1,0 +1,4 @@
+mankindsymposium
+================
+
+The Mankind Symposium

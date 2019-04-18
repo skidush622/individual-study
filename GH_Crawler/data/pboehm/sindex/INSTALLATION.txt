@@ -1,0 +1,6 @@
+## Installation
+`sindex` requires Ruby 1.9 to work, then you can install it through:
+    $ [sudo] gem install sindex
+You can configure `sindex` in `~/.sindex/config.yml` after initial
+execution. The standard path for the episode index is
+`~/.sindex/seriesindex.xml`.
