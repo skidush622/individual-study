@@ -13,3 +13,6 @@ Use:
 
 
 `python3 crawl.py`
+
+
+`python3 crawl2.py`  to get the requirements.txt from an example git repo
