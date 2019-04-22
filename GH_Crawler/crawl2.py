@@ -24,13 +24,12 @@ if __name__ == '__main__':
         if(res is False):
             print("already exists")
             continue
-        tip = str("\n\n=========== pip install? (Y/N) ============\n\n")
+        tip = str("\n\n=========== install? (Y/N) ============\n\n")
         install = input(tip)
         if(install is 'Y'):
            if(res is 1):
                path = "./req/"+username+"/"+repo+"/requirements.txt"
-               print(path)
-               '''os.system("pip install -r " + path)'''
+               print("do pip install with " + path)
            else:
                path = "./req/"+username+"/"+repo+"/package.json"
-               print(path)
+               print("do npm install with " + path)
